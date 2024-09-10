@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import './App.css';
 
 // const socket = io('http://localhost:4000');
-const socket = io('https://kishmish-theta.vercel.app/');
+const socket = io('https://kishmishbck.vercel.app/');
 
 const INTERESTS = ['Music', 'Movies', 'Sports', 'Gaming', 'Travel', 'Food', 'Technology', 'Art'];
 
