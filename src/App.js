@@ -13,7 +13,7 @@ const INTERESTS = ['Music', 'Movies', 'Sports', 'Gaming', 'Travel', 'Food', 'Tec
 function App() {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
-  const [status, setStatus] = useState('connecting');
+  const [status, setStatus] = useState('idle');
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [partnerId, setPartnerId] = useState(null);
   const messagesEndRef = useRef(null);
@@ -113,7 +113,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Random Chat App</h1>
+        <h1>Kishmish Chat App</h1>
         <div className={`status ${status}`}>Status: {status}</div>
       </header>
       <div className="chat-container">
