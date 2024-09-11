@@ -48,6 +48,41 @@ function App() {
 
   useEffect(scrollToBottom, [messages]);
 
+  // New useEffect for eye movement
+  useEffect(() => {
+    const eyes = document.querySelectorAll('.eye');
+    
+    const moveEyes = (e) => {
+      eyes.forEach(eye => {
+        const rect = eye.getBoundingClientRect();
+        const eyeCenterX = rect.left + rect.width / 2;
+        const eyeCenterY = rect.top + rect.height / 2;
+        
+        // Calculate the angle between the mouse and the eye center
+        const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
+        
+        // Calculate the distance between the mouse and the eye center
+        const distance = Math.min(
+          rect.width / 4, // Limit to half the radius
+          Math.sqrt(Math.pow(e.clientX - eyeCenterX, 2) + Math.pow(e.clientY - eyeCenterY, 2))
+        );
+        
+        // Calculate new pupil position
+        const pupilX = Math.cos(angle) * distance;
+        const pupilY = Math.sin(angle) * distance;
+        
+        const pupil = eye.querySelector('.pupil');
+        pupil.style.transform = `translate(${pupilX}px, ${pupilY}px)`;
+      });
+    };
+  
+    document.addEventListener('mousemove', moveEyes);
+    
+    return () => {
+      document.removeEventListener('mousemove', moveEyes);
+    };
+  }, []);
+
   const sendMessage = (e) => {
     e.preventDefault();
     if (inputMessage.trim() && status === 'chatting') {
@@ -82,11 +117,11 @@ function App() {
     startChatting();
   };
 
-  if (status === 'connecting' || status === 'waiting') {
+  if (status === 'idle' || status === 'waiting') {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Random Chat App</h1>
+          <h1>Kishmish Chat App</h1>
           <div className={`status ${status}`}>Status: {status}</div>
         </header>
         <div className="interest-selection">
@@ -105,6 +140,11 @@ function App() {
           <button onClick={startChatting}>
             Start Chatting {selectedInterests.length > 0 ? `(${selectedInterests.length} interests)` : '(No interests)'}
           </button>
+        </div>
+        {/* Added eyes container */}
+        <div className="eyes-container">
+          <div className="eye"><div className="pupil"></div></div>
+          <div className="eye"><div className="pupil"></div></div>
         </div>
       </div>
     );
@@ -139,6 +179,11 @@ function App() {
           <button onClick={disconnect}>Disconnect</button>
           <button onClick={findNewMatch}>Find New Match</button>
         </div>
+      </div>
+      {/* Added eyes container */}
+      <div className="eyes-container">
+        <div className="eye"><div className="pupil"></div></div>
+        <div className="eye"><div className="pupil"></div></div>
       </div>
     </div>
   );
