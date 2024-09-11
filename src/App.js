@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import './App.css';
 
 // const socket = io('http://localhost:4000');
-const socket = io('http://43.204.130.30:3000');
+const socket = io('http://43.204.130.30:4000');
 // const socket = io('https://kishmishbck.vercel.app', {
 //   transports: ['websocket'] // Force WebSocket and disable polling
 // });
