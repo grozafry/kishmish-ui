@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import './App.css';
 
-// const socket = io('http://localhost:4000');
-const socket = io('http://43.204.130.30:4000');
+const socket = io('http://localhost:4000');
+// const socket = io('http://43.204.130.30:4000');
 // const socket = io('https://kishmishbck.vercel.app', {
 //   transports: ['websocket'] // Force WebSocket and disable polling
 // });
@@ -16,6 +16,7 @@ function App() {
   const [status, setStatus] = useState('idle');
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [partnerId, setPartnerId] = useState(null);
+  const [onlineUsersCount, setOnlineUsersCount] = useState(0); 
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -37,12 +38,16 @@ function App() {
       setPartnerId(null);
       setMessages([]);
     });
+    socket.on('totalUsersCount', (count) => {
+      setOnlineUsersCount(count); // Update the online user count
+    });
 
     return () => {
       socket.off('waiting');
       socket.off('chat start');
       socket.off('receive message');
       socket.off('partner disconnected');
+      socket.off('updateOnlineUsers');
     };
   }, []);
 
@@ -123,6 +128,7 @@ function App() {
         <header className="App-header">
           <h1>Kishmish Chat App</h1>
           <div className={`status ${status}`}>Status: {status}</div>
+          <div className="online-users">Online Users: {onlineUsersCount}</div> {/* Display online user count */}
         </header>
         <div className="interest-selection">
           <h2>Select your interests (optional):</h2>
@@ -155,6 +161,7 @@ function App() {
       <header className="App-header">
         <h1>Kishmish Chat App</h1>
         <div className={`status ${status}`}>Status: {status}</div>
+        <div className="online-users">Online Users: {onlineUsersCount}</div> {/* Display online user count */}
       </header>
       <div className="chat-container">
         <div className="chat-box">
