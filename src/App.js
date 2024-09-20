@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import './App.css';
 
-const socket = io('https://192.168.1.2:4000');
+// const socket = io('https://192.168.1.2:4000');
+const socket = io('https://43.204.130.30:4000/');
 // const socket = io('https://localhost:4000');
 
 const INTERESTS = ['Music', 'Movies', 'Sports', 'Gaming', 'Travel', 'Food', 'Technology', 'Art'];
@@ -429,10 +430,29 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Kishmish Chat App</h1>
+        <h1>Kishmish Chat</h1>
         <div className={`status ${status}`}>Status: {status}</div>
-        <div className="online-users">Online Users: {onlineUsersCount}</div>
+        <div className="online-users">Online: {onlineUsersCount}</div>
       </header>
+      {(status === 'idle' || status === 'waiting') && (
+        <div className="interest-selection">
+          <h2>Select interests (optional):</h2>
+          <div className="interest-buttons">
+            {INTERESTS.map(interest => (
+              <button
+                key={interest}
+                onClick={() => toggleInterest(interest)}
+                className={selectedInterests.includes(interest) ? 'selected' : ''}
+              >
+                {interest}
+              </button>
+            ))}
+          </div>
+          <button onClick={startChatting} className="start-chat-btn">
+            Start Chatting {selectedInterests.length > 0 ? `(${selectedInterests.length})` : ''}
+          </button>
+        </div>
+      )}
       {status === 'chatting' && (
         <div className="chat-container">
           <div className="chat-box">
@@ -455,13 +475,13 @@ function App() {
           </form>
           <div className="chat-actions">
             <button onClick={disconnect}>Disconnect</button>
-            <button onClick={findNewMatch}>Find New Match</button>
-            {!isInVoiceCall && <button onClick={startVoiceCall}>Start Voice Call</button>}
+            <button onClick={findNewMatch}>New Match</button>
+            {!isInVoiceCall && <button onClick={startVoiceCall}>Voice Call</button>}
             {isInVoiceCall && (
               <>
-                <button onClick={endVoiceCall}>End Voice Call</button>
+                <button onClick={endVoiceCall}>End Call</button>
                 <button onClick={toggleMute}>{isMuted ? 'Unmute' : 'Mute'}</button>
-                <span>Call Duration: {formatDuration(callDuration)}</span>
+                <span className="call-duration">Call: {formatDuration(callDuration)}</span>
               </>
             )}
           </div>
@@ -480,3 +500,5 @@ function App() {
 }
 
 export default App;
+
+
