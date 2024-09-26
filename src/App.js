@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import './App.css';
 
 // const socket = io('https://192.168.1.2:4000');
-const socket = io('https://43.204.130.30:4000/');
+const socket = io('https://3.108.53.173:4000/');
 // const socket = io('https://localhost:4000');
 
 const INTERESTS = ['Music', 'Movies', 'Sports', 'Gaming', 'Travel', 'Food', 'Technology', 'Art'];
